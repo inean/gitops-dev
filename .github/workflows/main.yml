@@ -1,15 +1,15 @@
-# This is a basic workflow to help you get started with Actions
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
 name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events 
+  # Triggers the workflow on push or pull request events
   # but only for the main branch
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   # Also trigger workflow every 60 days
   schedule:
     - cron: "0 0 1 */2 *"
@@ -18,16 +18,16 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
+  # The type of runner that the job will run on
   integration:
     name: Integration Tests
-
-    # The type of runner that the job will run on
-    runs-on: {{ matrix.os }}
-    matrix:
-      os:
-        - macos-latest
-        - macos-11.4
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - macos-latest
+          - macos-11.4
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -37,11 +37,11 @@ jobs:
       - name: Uninstall GitHub Actions package manager
         run: scripts/package_manager.sh -u
 
-      - name: Uninstall Github Actions' built-in browser on MacOs.
+      - name: Uninstall Github Actions' built-in browser on MacOs
         if: startsWith(matrix.os, 'macOS')
-          run: |
-            sudo rm -rf /Applications/Firefox.app
-            sudo rm -rf /Applications/Google\ Chrome.app
+        run: |
+          sudo rm -rf /Applications/Firefox.app
+          sudo rm -rf /Applications/Google\ Chrome.app
 
       - name: Install test dependencies.
         run: sudo pip3 install ansible
