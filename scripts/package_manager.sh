@@ -55,10 +55,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 # source install/uninstall methods for this os.
-if [[ ! -f $ostype.sh ]]; then
+SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+if [[ ! -f $SCRIPT_DIR/$ostype.sh ]]; then
     abort "Can't inject packager ops methods for $ostype" 
 fi
-source $ostype.sh
+source $SCRIPT_DIR/$ostype.sh
 # run action
 packager_${opt_action} $opt_prefix $opt_dryrun
 
