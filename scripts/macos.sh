@@ -17,26 +17,18 @@ packager_install() {
 packager_uninstall() {
   # Download and run the uninstall script.
   script_url="https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh" 
-  opt_brew_path=""
-  opt_dry_run=""
+  opt_dryrun=""
 
-  # Sanity Check. prefix is optional. If present. Ensure hombrew is installed
-  if [[ ! -z $1 ]]; then
-    if [[ ! -x $1/brew ]]; then
-      abort "$1/brew not found"
-    fi
-    opt_brew_path="--path=$1"
-  fi
   # Dry run script
-  if [[ ! -z $2 ]]; then
-    opt_dry_run="--dry-run"
+  if [[ ! -z $1 ]]; then
+    opt_dryrun="--dry-run"
   fi
   curl -sLo $tmpdir/uninstall.sh $script_url || abort "failed to download script from $script_url"
   chmod +x $tmpdir/uninstall.sh
-  sudo $tmpdir/uninstall.sh --force $opt_brew_path $opt_dry_run
+  sudo $tmpdir/uninstall.sh --force $opt_dryrun
 
   # Clean up Homebrew directories.
-  if [[ $dry_run -eq "" ]]; then
+  if [[ $opt_dryrun -eq "" ]]; then
     sudo rm -rf $1/Homebrew
     sudo rm -rf $1Caskroom
     sudo rm -rf $1/bin/brew

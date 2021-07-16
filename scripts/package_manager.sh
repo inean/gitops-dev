@@ -23,20 +23,13 @@ EOS
 failed=false
 
 # Default vars
-opt_prefix=""
 opt_action=""
 opt_dryrun=""
    
 # detect os.
 un=$(uname)
 case "$un" in
-  Darwin)
-    ostype=macos
-    opt_prefix=/usr/local
-    if [[ "$(uname -m)" == "arm64" ]]; then
-      opt_prefix=/opt/homebrew
-    fi
-  ;;
+  Darwin) ostype=macos ;;
   *)
     abort "Unsupported system type '$un'"
   ;;
@@ -61,6 +54,6 @@ if [[ ! -f $SCRIPT_DIR/$ostype.sh ]]; then
 fi
 source $SCRIPT_DIR/$ostype.sh
 # run action
-packager_${opt_action} $opt_prefix $opt_dryrun
+packager_${opt_action} $opt_dryrun
 
 [[ $failed != true ]]
