@@ -12,11 +12,11 @@ trap '
 packager_install() {
   abort "Not yet implemented"
   failed=true
-} 
+}
 
 packager_uninstall() {
   # Download and run the uninstall script.
-  script_url="https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh" 
+  script_url="https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh"
   opt_dryrun=""
 
   # Dry run script
