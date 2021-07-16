@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request
+  push:
+    branches: [main, devel]
+  pull_request:
+    branches: [main]
+  # Also trigger workflow every 60 days
+  schedule:
+    - cron: "0 0 1 */2 *"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # The type of runner that the job will run on
+  integration:
+    name: Integration Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          # - macos-latest
+          - macos-10.15
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        uses: actions/checkout@v2
+
+      - name: Uninstall GitHub Actions package manager
+        run: scripts/package_manager.sh -u
+
+      - name: Uninstall Github Actions' built-in browser on MacOs
+        if: startsWith(matrix.os, 'macOS')
+        run: |
+          sudo rm -rf /Applications/Firefox.app
+          sudo rm -rf /Applications/Google\ Chrome.app
+
+      - name: Install test dependencies.
+        run: sudo pip3 install ansible

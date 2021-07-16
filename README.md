@@ -12,3 +12,6 @@ We use git branches to separe code specific to different OS. *main* branch is wh
 
   1. Checkout branch relates to your development OS
   2. Run `make init`. This will create a local Python 3 environment where Ansible will be installed`
+
+[badge-gh-actions]: https://github.com/inean/gitops-dev/actions/workflows/main.yml/badge.svg?event=push
+[link-gh-actions]: https://github.com/inean/gitops-dev/actions?query=workflow%3ACI
